@@ -11,8 +11,8 @@ using Product_Manager.Data;
 namespace Product_Manager.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20230907125401_initial")]
-    partial class initial
+    [Migration("20230921084920_update")]
+    partial class update
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,12 +24,27 @@ namespace Product_Manager.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("CategoryProduct", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CategoryId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("CategoryProduct", (string)null);
+                });
+
             modelBuilder.Entity("Product_Manager.Domain.Category", b =>
                 {
                     b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("CategoryID");
+                        .HasColumnName("CategoryId");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
 
@@ -48,7 +63,7 @@ namespace Product_Manager.Migrations
                     b.Property<int>("ProductId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("ProductID");
+                        .HasColumnName("ProductId");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
 
@@ -83,74 +98,19 @@ namespace Product_Manager.Migrations
                     b.ToTable("Product");
                 });
 
-            modelBuilder.Entity("Product_Manager.Domain.ProductCategory", b =>
+            modelBuilder.Entity("CategoryProduct", b =>
                 {
-                    b.Property<int>("ProductCategoryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductCategoryId"));
-
-                    b.Property<int>("CategoryID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SKU")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ProductCategoryId");
-
-                    b.HasIndex("CategoryID");
-
-                    b.HasIndex("ProductID");
-
-                    b.ToTable("ProductCategory");
-                });
-
-            modelBuilder.Entity("Product_Manager.Domain.ProductCategory", b =>
-                {
-                    b.HasOne("Product_Manager.Domain.Category", "Category")
-                        .WithMany("ProductCategory")
-                        .HasForeignKey("CategoryID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Product_Manager.Domain.Product", "Product")
+                    b.HasOne("Product_Manager.Domain.Category", null)
                         .WithMany()
-                        .HasForeignKey("ProductID")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Category");
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Product_Manager.Domain.Category", b =>
-                {
-                    b.Navigation("ProductCategory");
+                    b.HasOne("Product_Manager.Domain.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -1,0 +1,313 @@
+﻿//using Product_Manager.Data;
+//using Product_Manager.Domain;
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
+
+//namespace Product_Manager.Code_comments
+//{
+//	internal class CodeComents2
+//	{
+//		static void RegisterProduct()
+//		{
+//			Console.CursorVisible = true;
+//			Console.Clear();
+
+//			Console.Write("Namn: ");
+//			string name = Console.ReadLine() ?? "";
+
+//			Console.Write("SKU: ");
+//			string sku = Console.ReadLine() ?? "";
+
+//			Console.Write("Beskrivning: ");
+//			string description = Console.ReadLine() ?? "";
+
+//			Console.Write("Bild (URL): ");
+//			string picture = Console.ReadLine() ?? "";
+
+//			Console.Write("Pris: ");
+//			if (!int.TryParse(Console.ReadLine(), out int price))
+//			{
+//				Console.CursorVisible = false;
+//				Console.Clear();
+//				Console.WriteLine("Pris får endast innehålla siffror");
+//				Thread.Sleep(2000);
+//				return;
+//			}
+
+//			Console.Write("\nÄr detta korrekt? (J)a (N)ej: ");
+//			ConsoleKeyInfo keyInfo = Console.ReadKey();
+
+
+//			if (keyInfo.Key == ConsoleKey.J)
+//			{
+//				Console.CursorVisible = false;
+//				Console.Clear();
+
+//				// Create the product
+//				Product product = new Product(name, sku, description, picture, price);
+
+//				if (SaveProduct(context, product))
+//				{
+//					Console.Write("Produkt sparad");
+//					Thread.Sleep(2000);
+//				}
+//			}
+//			else if (keyInfo.Key == ConsoleKey.N)
+//			{
+//				Console.Clear();
+//				return;
+//			}
+
+//		}
+
+//		static bool SaveProduct(ApplicationContext context, Product product)
+//		{
+//			// Check if SKU already exists
+//			var existingProduct = context.Product.FirstOrDefault(p => p.Sku == product.Sku);
+
+//			if (existingProduct != null)
+//			{
+//				Console.CursorVisible = false;
+//				Console.Clear();
+//				Console.WriteLine("SKU finns redan");
+//				Thread.Sleep(2000);
+//				return false;
+//			}
+
+//			// Insert the product into the database
+//			try
+//			{
+//				context.Product.Add(product);
+//				context.SaveChanges();
+//				return true;
+//			}
+//			catch (Exception ex)
+//			{
+//				Console.WriteLine($"Error: {ex.Message}");
+//				return false;
+//			}
+//		}
+
+//    -----------------------------------------------------------------------------------------
+
+//      static void SearchProduct()
+//		{
+//			Console.CursorVisible = true;
+//			Console.Clear();
+//			Console.Write("SKU: ");
+//			string searchSku = Console.ReadLine() ?? "";
+
+//			Product product = SearchProductInSql(searchSku, context); // Pass the context as an argument
+
+//			if (product != null)
+//			{
+//				DisplayProductDetails(product);
+
+//				Console.CursorVisible = false;
+//				Console.WriteLine("\n(R)adera (U)ppdatera");
+//				Console.WriteLine("\nTryck på Escape för att gå tillbaka till huvudmenyn");
+
+//				while (true)
+//				{
+//					ConsoleKeyInfo keyInfo = Console.ReadKey();
+
+//					if (keyInfo.Key == ConsoleKey.R)
+//					{
+//						Console.CursorVisible = true;
+//						DeleteProduct(product, context); // Pass the context as an argument
+//						break;
+//					}
+//					else if (keyInfo.Key == ConsoleKey.U)
+//					{
+//						Console.CursorVisible = true;
+//						UpdateProduct(product, context); // Pass the context as an argument
+//						break;
+//					}
+//					else if (keyInfo.Key == ConsoleKey.Escape)
+//					{
+//						break;
+//					}
+//				}
+//			}
+//			else
+//			{
+//				Console.CursorVisible = false;
+//				Console.Clear();
+//				Console.WriteLine("Produkt finns ej");
+//				Thread.Sleep(2000);
+//			}
+
+//		}
+
+//		static Product SearchProductInSql(string searchSku, ApplicationContext context)
+//		{
+//			// Use Entity Framework Core to query the database
+//			var product = context.Product.FirstOrDefault(p => p.Sku == searchSku);
+
+//			if (product != null)
+//			{
+//				// Convert the retrieved product to your Product class
+//				return new Product(product.Name, product.Sku, product.Description, product.ImageUrl, product.Price);
+//			}
+
+//			return null;
+//		}
+
+//    ---------------------------------------------------------------------------------------------------------
+
+    //static void AddCategory()
+    //{
+    //    while (true)
+    //    {
+    //        Console.CursorVisible = true;
+    //        Console.Clear();
+
+    //        Console.Write("Namn: ");
+    //        string name = Console.ReadLine() ?? "";
+
+    //        Console.Write("\nÄr detta korrekt? (J)a (N)ej: ");
+    //        ConsoleKeyInfo keyInfo = Console.ReadKey();
+
+    //        if (keyInfo.Key == ConsoleKey.J)
+    //        {
+    //            Console.CursorVisible = false;
+    //            Console.Clear();
+
+    //            Category category = new Category(name);
+
+    //            if (SaveCategory(context, category))
+    //            {
+    //                Console.Write("Kategori sparad");
+    //                Thread.Sleep(2000);
+    //            }
+
+    //            break;
+    //        }
+    //        else if (keyInfo.Key == ConsoleKey.N)
+    //        {
+    //            Console.Clear();
+    //            continue;
+    //        }
+    //    }
+    //}
+
+    //static bool SaveCategory(ApplicationContext context, Category category)
+    //{
+
+    //    var existingCategory = context.Category.FirstOrDefault(c => c.Name == category.Name);
+    //    if (existingCategory != null)
+    //    {
+    //        Console.CursorVisible = false;
+    //        Console.Clear();
+    //        Console.WriteLine("Kategori finns redan");
+    //        Thread.Sleep(2000);
+    //        return false;
+    //    }
+
+    //    try
+    //    {
+    //        context.Category.Add(category);
+    //        context.SaveChanges();
+    //        return true;
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        Console.WriteLine($"Error: {ex.Message}");
+    //        return false;
+    //    }
+    //}
+
+    //--------------------------------------------------------------------------------------------------
+
+//        //static void AddProductToCategory()
+//        //{
+//        //    Console.CursorVisible = true;
+//        //    Console.Clear();
+//        //    Console.Write("SKU: ");
+//        //    string searchSKU = Console.ReadLine() ?? "";
+
+//        //    Product? product = SearchProductInSql(searchSKU, context);
+
+//        //    if (product != null)
+//        //    {
+//        //        Console.CursorVisible = true;
+//        //        Console.Clear();
+//        //        Console.WriteLine($"Namn: {product.Name}");
+//        //        Console.WriteLine($"SKU: {product.SKU}");
+
+//        //        Console.Write("Ange kategori: ");
+//        //        string categoryName = Console.ReadLine() ?? "";
+
+//        //        SaveProductToCategory(product, categoryName, context);
+//        //    }
+//        //    else
+//        //    {
+//        //        Console.CursorVisible = false;
+//        //        Console.Clear();
+//        //        Console.WriteLine("Produkt hittades inte");
+//        //        Thread.Sleep(2000);
+//        //    }
+//        //}
+
+//        //static void SaveProductToCategory(Product product, string categoryName, ApplicationContext context)
+//        //{
+//        //    try
+//        //    {
+//        //        // Check if the category exists in the database
+//        //        var category = context.Categories.FirstOrDefault(c => c.Name == categoryName);
+
+//        //        if (category != null)
+//        //        {
+//        //            // Check if the product exists
+//        //            var existingProduct = context.Products.FirstOrDefault(p => p.SKU == product.SKU);
+
+//        //            if (existingProduct != null)
+//        //            {
+//        //                // Check if the product is already associated with the category
+//        //                var existingAssociation = context.ProductCategory
+//        //                    .FirstOrDefault(pc => pc.ProductID == existingProduct.ProductID && pc.CategoryID == category.CategoryID);
+
+//        //                if (existingAssociation == null)
+//        //                {
+//        //                    // Create a new ProductCategory record
+//        //                    var productCategory = new ProductCategory
+//        //                    {
+//        //                        ProductID = existingProduct.ProductID,
+//        //                        CategoryID = category.CategoryID
+//        //                    };
+
+//        //                    // Add the ProductCategory record to the context and save changes
+//        //                    context.ProductCategory.Add(productCategory);
+//        //                    context.SaveChanges();
+
+//        //                    Console.CursorVisible = false;
+//        //                    Console.Clear();
+//        //                    Console.WriteLine("Produkt tillagd till kategori");
+//        //                    Thread.Sleep(2000);
+//        //                }
+//        //                else
+//        //                {
+//        //                    throw new InvalidOperationException("Produkt redan tillagd");
+//        //                }
+//        //            }
+//        //        }
+//        //        else
+//        //        {
+//        //            throw new InvalidOperationException("Kategorin finns inte");
+//        //        }
+//        //    }
+//        //    catch (InvalidOperationException ex)
+//        //    {
+//        //        Console.CursorVisible = false;
+//        //        Console.Clear();
+//        //        Console.WriteLine(ex.Message);
+//        //        Thread.Sleep(2000);
+//        //    }
+//        //}
+//    }
+//}
+
+//public ICollection<ProductCategory> ProductCategory { get; set; } = new List<ProductCategory>();

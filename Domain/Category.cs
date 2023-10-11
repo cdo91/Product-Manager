@@ -6,70 +6,39 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Product_Manager.Domain
+namespace Product_Manager.Domain;
+
+public class Category
 {
-    //public class Category
-    //{
-    //    private string? name;
-    //    public string? Name
-    //    {
-    //        get => name;
-    //        set
-    //        {
-    //            if (!string.IsNullOrEmpty(value))
-    //            {
-    //                name = value;
-    //            }
-    //            else
-    //            {
-    //                throw new ArgumentException("Namn måste vara ifylld");
-    //            }
-    //        }
-    //    }
+    public int CategoryId { get; set; } // Unik identifierare för kategorin i databasen.
 
-    //    public Category(string name)
-    //    {
-    //        Name = name;
-    //    }
-    //}
+    private string name; // Definierar det privata fältet för egenskapen.
 
-    public class Category
+    [MaxLength(50)]
+    public string Name
     {
-
-        [Key]
-        [Column("CategoryID")]
-        public int CategoryId { get; set; }
-
-        private string name; // Define the private field for the property.
-
-        [MaxLength(50)]
-        public string Name
+        get => name; // Hämtar namnet för kategorin.
+        set
         {
-            get => name;
-            set
+            if (!string.IsNullOrEmpty(value))
             {
-                if (!string.IsNullOrEmpty(value))
-                {
-                    name = value;
-                }
-                else
-                {
-                    throw new ArgumentException("Namn måste vara ifylld");
-                }
+                name = value; // Tilldelar värdet till kategorins namn om det inte är tomt.
+            }
+            else
+            {
+                throw new ArgumentException("Namn måste vara ifylld"); // Kastar ett undantag om namnet är tomt.
             }
         }
-
-        public Category(string name)
-        {
-            Name = name;
-        }
-
-        // Parameterless constructor required by Entity Framework Core
-        public Category()
-        {
-        }
-
-        public ICollection<ProductCategory> ProductCategory { get; set; } = new List<ProductCategory>();
-
     }
+
+    public Category(string name) // Konstruktor för att skapa en ny produkt med alla attribut.
+    {
+        Name = name;
+    }
+
+    public Category() // En tom Standardkonstruktor för en produkt som EF core använder för att kunna skapa nya instanser av Product-klassen.
+    {
+    }
+
+    public ICollection<Product> Product { get; set; } = new List<Product>(); // En samling av produktkobjekt som är kopplade till denna klass.
 }
